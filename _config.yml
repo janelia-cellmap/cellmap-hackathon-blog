@@ -39,7 +39,7 @@ baseurl: "/cellmap-hackathon-blog" # the subpath of your site, e.g. "/blog".
 # Github and twitter are optional:
 minima:
   social_links:
-    twitter: twitter: "search?q=%23CellMap&src=typed_query&f=top"
+    twitter: "search?q=%23CellMap&src=typed_query&f=top"
     github: janelia-cellmap
 
 # Set this to true to get LaTeX math equation support
