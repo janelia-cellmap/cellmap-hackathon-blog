@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: About
 description: Tools for interactive annotation and machine learning on large FIB-SEM (and other) data of cells and tissues
 permalink: /about/
