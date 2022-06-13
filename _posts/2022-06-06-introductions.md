@@ -1,5 +1,5 @@
 ---
-toc: true
+toc: false
 layout: post
 description: A breif intoduction to all the hackathon attendees.
 categories: [markdown]
