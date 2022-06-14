@@ -12,6 +12,7 @@ Dominik Kutra ([@k-dominik](https://github.com/k-dominik)) from the [Kreshuk gro
 The method trains many different Random Forests on source from full labels, then trains an 'Enhancer' (U-Net) to improve the Random Forest predictions. 
 1. Step 1: Train the Random Forest with ilastik (normal workflow)
 2. Step 2 Apply the Enhancer for significant improvements
+
 The Enhancer _only_ sees the Random Forest predictions. The model can be found in the [BioImage Model Zoo](https://bioimage.io/#/?tags=mitochondria&id=10.5281%2Fzenodo.6406756).
 
 See more in this twitter thread announcing the method:
