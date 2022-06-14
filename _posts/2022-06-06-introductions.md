@@ -1,7 +1,7 @@
 ---
 toc: false
 layout: post
-description: A breif intoduction to all the hackathon attendees.
+description: A brief intoduction to all the hackathon attendees.
 categories: [introductions,about]
 title: Meet the attendees
 image: images/group-dinner-2-small.jpg
