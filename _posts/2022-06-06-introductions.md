@@ -4,7 +4,7 @@ layout: post
 description: A breif intoduction to all the hackathon attendees.
 categories: [introductions,about]
 title: Meet the attendees
-image: images/group-dinner-2.jpg
+image: images/group-dinner-2-small.jpg
 ---
 # Meet the hackathon attendees
 
@@ -150,5 +150,5 @@ I am a computer scientist with an interest in machine learning based image recon
 ## Marwan Zouinkhi [@mzouink](https://github.com/mzouink)
 I started as a software engineer and a mobile developer then I shifted into scaling image analysis for my PHD. Last November, I joined Janelia as part of the Scientific computing team and CellMap project. I am interested in scaling image processing of large multi-dimensional datasets and automatizing image reconstructions. Currently, I am working on a versioned data store service that will be used in the active learning project. During the hackathon I plan to integrate the versioned storage into Paintera and ML applications.
 
-![]({{ site.baseurl }}/images/group-dinner-1 "group dinner")
-![]({{ site.baseurl }}/images/group-dinner-2 "group dinner")
+![]({{ site.baseurl }}/images/group-dinner-1.jpg "group dinner")
+![]({{ site.baseurl }}/images/group-dinner-2.jpg "group dinner")
