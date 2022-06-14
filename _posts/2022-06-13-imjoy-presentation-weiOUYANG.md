@@ -2,8 +2,9 @@
 toc: false
 layout: post
 description: Wei Ouyang presents on ImJoy
-categories: [markdown]
+categories: [ImJoy,Deep Learning,Open Science,Javascript,web Python]
 title: Building Infrastructure for Web- and AI-powered Data Analysis
+image: images/WeiOUYANG_aboutme_small.png
 ---
 # A future of web- and AI-powered data analysis
 Wei Ouyang ([@oeway](https://oeway.github.io)) from SciLifeLab | KTH Royal Institute of Technology, Stockholm shared his work on building infrastructure for web- and AI-powered data analysis. This includes:
