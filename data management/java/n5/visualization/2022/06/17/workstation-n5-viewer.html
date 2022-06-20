@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>N5 Viewer plugin for Janelia Workstation | CellMap hackathon blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="N5 Viewer plugin for Janelia Workstation" />
+<meta name="author" content="Konrad Rokicki" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Embedding the N5 Viewer in the Janelia Workstation" />
+<meta property="og:description" content="Embedding the N5 Viewer in the Janelia Workstation" />
+<link rel="canonical" href="https://janelia-cellmap.github.io/cellmap-hackathon-blog/data%20management/java/n5/visualization/2022/06/17/workstation-n5-viewer.html" />
+<meta property="og:url" content="https://janelia-cellmap.github.io/cellmap-hackathon-blog/data%20management/java/n5/visualization/2022/06/17/workstation-n5-viewer.html" />
+<meta property="og:site_name" content="CellMap hackathon blog" />
+<meta property="og:image" content="https://janelia-cellmap.github.io/cellmap-hackathon-blog/images/janeliaws-128.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-06-17T00:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://janelia-cellmap.github.io/cellmap-hackathon-blog/images/janeliaws-128.png" />
+<meta property="twitter:title" content="N5 Viewer plugin for Janelia Workstation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Konrad Rokicki"},"dateModified":"2022-06-17T00:00:00-05:00","datePublished":"2022-06-17T00:00:00-05:00","description":"Embedding the N5 Viewer in the Janelia Workstation","headline":"N5 Viewer plugin for Janelia Workstation","image":"https://janelia-cellmap.github.io/cellmap-hackathon-blog/images/janeliaws-128.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://janelia-cellmap.github.io/cellmap-hackathon-blog/data%20management/java/n5/visualization/2022/06/17/workstation-n5-viewer.html"},"url":"https://janelia-cellmap.github.io/cellmap-hackathon-blog/data%20management/java/n5/visualization/2022/06/17/workstation-n5-viewer.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/cellmap-hackathon-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://janelia-cellmap.github.io/cellmap-hackathon-blog/feed.xml" title="CellMap hackathon blog" /><link rel="shortcut icon" type="image/x-icon" href="/cellmap-hackathon-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/cellmap-hackathon-blog/"><img src="/cellmap-hackathon-blog/images/logo.png" alt="CellMap hackathon blog logo" /> <b>CellMap hackathon blog</b></a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/cellmap-hackathon-blog/about/">About</a><a class="page-link" href="/cellmap-hackathon-blog/search/">Search</a><a class="page-link" href="/cellmap-hackathon-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">N5 Viewer plugin for Janelia Workstation</h1><p class="page-description">Embedding the N5 Viewer in the Janelia Workstation</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-06-17T00:00:00-05:00" itemprop="datePublished">
+        Jun 17, 2022
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Konrad Rokicki</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/cellmap-hackathon-blog/categories/#Data management">Data management</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/cellmap-hackathon-blog/categories/#Java">Java</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/cellmap-hackathon-blog/categories/#N5">N5</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/cellmap-hackathon-blog/categories/#Visualization">Visualization</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>CellMap already has a great data portal for published data at <a href="https://openorganelle.janelia.org/">openorganelle.janelia.org</a>. But internally, before publishing, the data is spread across NFS file shares and sometimes difficult to find and access. Many of the tools used internally, such as BigDataViewer and Painter, are desktop applications which require direct access to the data through NFS/Samba mounting. Users need to be familiar with the disk organization and how to launch all of these tools.</p>
+
+<p>The Janelia Workstation is a data discovery platform originally built for the FlyLight and MouseLight team projects. It makes data discoverable, easily accessible, and searchable, with group-based permissions to ensure everyone sees what they should be seeing. The Workstation platform was also recently <a href="https://hortacloud.janelia.org/">made available in the cloud</a>, but we were initially interested in using it internally at Janelia to enable access to pre-published data. The first step was done weeks ago, when Konrad added a <em>Synchronized Folders</em> feature to the Workstation, allowing any Workstation user to add a directory path to the Workstation, which is searched for N5 containers. These N5 containers are treated as first-class objects within the Workstation, and can be shared with other users, searched, added to virtual folders, etc.</p>
+
+<p>For the hackathon, we wanted to embed the N5 Viewer into the Workstation, to make it possible to view and explore the N5 data sets in the Workstation.
+To accomplish this, Konrad worked closely with N5 Viewer maintainer John Bogovic, BigDataViewer author Tobias Pietzsch, and N5/imglib2 creator Stephan Saalfeld. Drawing on their combined knowledge accelerated the effort tremedously.</p>
+
+<h2 id="what-was-done">What was done</h2>
+
+<ul>
+  <li>N5 Viewer was first <a href="https://github.com/saalfeldlab/n5-viewer/pull/24">refactored</a> such that the core viewer is now its own class and not a Fiji plugin. This allowed for the viewer to be embedded into programs other than Fiji.</li>
+  <li>The refactored N5 Viewer was then <a href="https://github.com/JaneliaSciComp/workstation/blob/d28d006c51c3fee40520a652098cb4c261dc1d6e/modules/ndviewer/src/main/java/org/janelia/workstation/ndviewer/BigDataViewerTopComponent.java#L112">embedded</a> into a Workstation <em>Top Component</em>, allowing it to be opened as part of the Workstation.</li>
+  <li>We <a href="https://github.com/JaneliaSciComp/workstation/blob/d28d006c51c3fee40520a652098cb4c261dc1d6e/modules/ndviewer/src/main/java/org/janelia/workstation/ndviewer/N5JadeReader.java">implemented</a> the <code class="language-plaintext highlighter-rouge">N5Reader</code> API using the Workstation’s RESTful storage backend known as Jade. This gives us access to the data from the client without any NFS/Samba mounting.</li>
+  <li>The n5-ij plugin’s <code class="language-plaintext highlighter-rouge">N5DataDiscoverer</code> was used to <a href="https://github.com/JaneliaSciComp/workstation/blob/d28d006c51c3fee40520a652098cb4c261dc1d6e/modules/ndviewer/src/main/java/org/janelia/workstation/ndviewer/N5ContainerNode.java#L106">implement the data set nodes</a> in the Workstation data explorer.</li>
+  <li>Right-click actions <a href="https://github.com/JaneliaSciComp/workstation/blob/d28d006c51c3fee40520a652098cb4c261dc1d6e/modules/ndviewer/src/main/java/org/janelia/workstation/ndviewer/N5TreeNodeNode.java#L198">were added</a> to the nodes, to allow users to open data sets in a new viewer or add them to an existing viewer.</li>
+</ul>
+
+<p>Users can now browse the full list of CellMap images located in /groups/cellmap/cellmap (or add their own directories). Drilling into an N5 container reveals all of the data sets inside of it. Right-clicking on these data sets allows the user to open them instantly in N5 Viewer.</p>
+
+<p><img src="/cellmap-hackathon-blog/images/workstation_n5.png" alt="" title="The N5 Viewer running in the Janelia Workstation" /></p>
+
+<p>This proof of concept demonstrates the reusability of the N5 tools, the extensibility of the Workstation platform, and the power of having all your data accessible in one place, without copying.</p>
+
+<h2 id="possible-future-directions">Possible future directions</h2>
+
+<ul>
+  <li>The sources in BigDataViewer should be named according to the n5 data sets</li>
+  <li>We need to make the BigDataViewer menu options available somewhere</li>
+  <li>The viewers should save/restore state like other components in the Workstation</li>
+  <li>The first “killer app” might be saving the viewer state and then sharing it with other users as a predefined view of the data</li>
+  <li>We can also link out to (or embed) other tools such as Paintera</li>
+</ul>
+
+
+  </div><a class="u-url" href="/cellmap-hackathon-blog/data%20management/java/n5/visualization/2022/06/17/workstation-n5-viewer.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/cellmap-hackathon-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/cellmap-hackathon-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/cellmap-hackathon-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>News and chatter about the CellMap hackathon.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/janelia-cellmap" target="_blank" title="janelia-cellmap"><svg class="svg-icon grey"><use xlink:href="/cellmap-hackathon-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/search?q=%23CellMap&src=typed_query&f=top" target="_blank" title="search?q=%23CellMap&amp;src=typed_query&amp;f=top"><svg class="svg-icon grey"><use xlink:href="/cellmap-hackathon-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
